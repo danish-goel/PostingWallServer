@@ -86,7 +86,7 @@ public class PostSvc implements PostSvcApi {
 			// string as the value for the title method parameter
 			@RequestParam(TITLE_PARAMETER) String title
 	){
-		return posts.findByName(title);
+		return posts.findByTitle(title);
 	}
 
 }

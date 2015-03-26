@@ -13,57 +13,84 @@ import com.google.common.base.Objects;
  * 
  */
 @Entity
-public class Post {
+public class Post 
+{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	private String name;
-	private String url;
-	private long duration;
+	private String title;
+	private String content;
+	private String poster;
+	Double latitude,longitude;
 
-	public Post() {
+	
+	public Post() 
+	{
+		
 	}
 
-	public Post(String name, String url, long duration) {
+	public Post(String title, String content,String poster,Double latitude,Double longitude) 
+	{
 		super();
-		this.name = name;
-		this.url = url;
-		this.duration = duration;
+		this.title=title;
+		this.content=content;
+		this.poster=poster;
+		this.latitude=latitude;
+		this.longitude=longitude;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public long getDuration() {
-		return duration;
-	}
-
-	public void setDuration(long duration) {
-		this.duration = duration;
-	}
-
-	public long getId() {
+	public long getId() 
+	{
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(long id) 
+	{
 		this.id = id;
 	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getPoster() {
+		return poster;
+	}
+
+	public void setPoster(String poster) {
+		this.poster = poster;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
 
 	/**
 	 * Two Videos will generate the same hashcode if they have exactly the same
@@ -71,9 +98,10 @@ public class Post {
 	 * 
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode() 
+	{
 		// Google Guava provides great utilities for hashing
-		return Objects.hashCode(name, url, duration);
+		return Objects.hashCode(title,content,poster,latitude,longitude);
 	}
 
 	/**
@@ -82,14 +110,19 @@ public class Post {
 	 * 
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Post) {
+	public boolean equals(Object obj) 
+	{
+		if (obj instanceof Post) 
+		{
 			Post other = (Post) obj;
 			// Google Guava provides great utilities for equals too!
-			return Objects.equal(name, other.name)
-					&& Objects.equal(url, other.url)
-					&& duration == other.duration;
-		} else {
+			return Objects.equal(title, other.title)
+					&& Objects.equal(content, other.content)
+					&& Objects.equal(poster, other.poster)
+					;
+		} 
+		else
+		{
 			return false;
 		}
 	}

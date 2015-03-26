@@ -16,6 +16,6 @@ import org.springframework.stereotype.Repository;
 public interface PostRepository extends CrudRepository<Post, Long>{
 
 	// Find all videos with a matching title (e.g., Video.name)
-	public Collection<Post> findByName(String title);
+	public Collection<Post> findByTitle(String title);
 	
 }
