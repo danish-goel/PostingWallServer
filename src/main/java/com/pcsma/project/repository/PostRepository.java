@@ -1,9 +1,11 @@
-package com.pcma.project;
+package com.pcsma.project.repository;
 
 import java.util.Collection;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import com.pcsma.project.classes.Post;
 
 /**
  * An interface for a repository that can store Video

@@ -1,4 +1,4 @@
-package com.pcma.project;
+package com.pcsma.project.classes;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

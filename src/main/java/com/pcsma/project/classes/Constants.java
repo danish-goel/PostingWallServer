@@ -1,4 +1,4 @@
-package com.pcma.project;
+package com.pcsma.project.classes;
 
 public class Constants 
 {
@@ -19,4 +19,11 @@ public class Constants
 		    return (long) (Math.round(AVERAGE_RADIUS_OF_EARTH * c));
 		}
 
+		
+		public static String capitaliseFirstLetter(String string)
+		{
+			StringBuilder sb = new StringBuilder(string);
+			sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));  
+			return sb.toString();
+		}
 }

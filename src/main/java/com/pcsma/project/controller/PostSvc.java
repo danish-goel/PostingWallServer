@@ -1,4 +1,4 @@
-package com.pcma.project;
+package com.pcsma.project.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import retrofit.http.Body;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.Query;
-
 import com.google.common.collect.Lists;
+import com.pcsma.project.classes.Constants;
+import com.pcsma.project.classes.Post;
+import com.pcsma.project.client.PostSvcApi;
+import com.pcsma.project.places.Places;
+import com.pcsma.project.repository.PostRepository;
 
 /**
  * This simple VideoSvc allows clients to send HTTP POST requests with
@@ -41,35 +41,13 @@ import com.google.common.collect.Lists;
 @Controller
 public class PostSvc implements PostSvcApi 
 {
-	
-	// The VideoRepository that we are going to store our videos
-	// in. We don't explicitly construct a VideoRepository, but
-	// instead mark this object as a dependency that needs to be
-	// injected by Spring. Our Application class has a method
-	// annotated with @Bean that determines what object will end
-	// up being injected into this member variable.
-	//
-	// Also notice that we don't even need a setter for Spring to
-	// do the injection.
-	//
+
 	@Autowired
 	private PostRepository posts;
 
-	// Receives POST requests to /video and converts the HTTP
-	// request body, which should contain json, into a Video
-	// object before adding it to the list. The @RequestBody
-	// annotation on the Video parameter is what tells Spring
-	// to interpret the HTTP request body as JSON and convert
-	// it into a Video object to pass into the method. The
-	// @ResponseBody annotation tells Spring to conver the
-	// return value from the method back into JSON and put
-	// it into the body of the HTTP response to the client.
-	//
-	// The VIDEO_SVC_PATH is set to "/video" in the VideoSvcApi
-	// interface. We use this constant to ensure that the 
-	// client and service paths for the VideoSvc are always
-	// in synch.
-	//
+	
+	/*----------------------------------------------------------------------------*/
+	
 	@RequestMapping(value=PostSvcApi.POST_SVC_PATH, method=RequestMethod.POST)
 	public @ResponseBody boolean addPost(@RequestBody Post v)
 	{
@@ -77,12 +55,6 @@ public class PostSvc implements PostSvcApi
 		 return true;
 	}
 	
-	
-	
-	// Receives GET requests to /video and returns the current
-	// list of videos in memory. Spring automatically converts
-	// the list of videos to JSON because of the @ResponseBody
-	// annotation.
 	@RequestMapping(value=PostSvcApi.POST_SVC_PATH, method=RequestMethod.GET)
 	public @ResponseBody Collection<Post> getPostList()
 	{
@@ -92,9 +64,6 @@ public class PostSvc implements PostSvcApi
 	
 	
 	
-	// Receives GET requests to /video/find and returns all Videos
-	// that have a title (e.g., Video.name) matching the "title" request
-	// parameter value that is passed by the client
 	@RequestMapping(value=PostSvcApi.POST_TITLE_SEARCH_PATH, method=RequestMethod.GET)
 	public @ResponseBody Collection<Post> findByTitle(
 			// Tell Spring to use the "title" parameter in the HTTP request's query
@@ -132,6 +101,12 @@ public class PostSvc implements PostSvcApi
 
 		}
 		return nearbyPosts;
+	}
+
+	@Override
+	public List<Places> getNearbyPlacesList(@RequestParam("latitude") Double lat,@RequestParam("longitude") Double longi) 
+	{
+		return null;
 	}
 	
 

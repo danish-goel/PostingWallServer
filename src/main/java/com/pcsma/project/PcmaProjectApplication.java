@@ -1,8 +1,10 @@
-package com.pcma.project;
+package com.pcsma.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import com.pcsma.project.repository.PostRepository;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackageClasses = PostRepository.class)
