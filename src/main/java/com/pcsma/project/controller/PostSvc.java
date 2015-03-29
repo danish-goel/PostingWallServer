@@ -1,5 +1,7 @@
 package com.pcsma.project.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +18,7 @@ import com.google.common.collect.Lists;
 import com.pcsma.project.classes.Constants;
 import com.pcsma.project.classes.Post;
 import com.pcsma.project.client.PostSvcApi;
+import com.pcsma.project.places.GooglePlaces;
 import com.pcsma.project.places.Places;
 import com.pcsma.project.repository.PostRepository;
 
@@ -104,11 +107,36 @@ public class PostSvc implements PostSvcApi
 	}
 
 	@Override
-	public List<Places> getNearbyPlacesList(@RequestParam("latitude") Double lat,@RequestParam("longitude") Double longi) 
+	@RequestMapping(value=PostSvcApi.NEARBY_PLACES_PATH, method=RequestMethod.GET)
+	public @ResponseBody List<Places> getNearbyPlacesList(@RequestParam("latitude") Double lat,@RequestParam("longitude") Double longi) 
 	{
-		return null;
+		try
+		{
+			String placesSearchStr ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
+	        +URLEncoder.encode(String.valueOf(lat), "UTF-8")
+	        +","
+	        +URLEncoder.encode(String.valueOf(longi), "UTF-8")
+	        +"&radius="
+			+URLEncoder.encode("2000", "UTF-8")
+			+"&sensor="
+			+URLEncoder.encode("true", "UTF-8")
+			+"&types="
+			+URLEncoder.encode("food|movie_theater|restaurant", "UTF-8")
+			+"&key="
+			+URLEncoder.encode(GooglePlaces.api_key, "UTF-8");
+			List<Places> placesList=new ArrayList<Places>();
+			GooglePlaces gp=new GooglePlaces();
+			placesList=gp.getNearbyPlaces(placesSearchStr);
+			return placesList;
+		}
+		catch (UnsupportedEncodingException e)
+		{
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		        return null;
+		}
+		
 	}
-	
 
 
 }

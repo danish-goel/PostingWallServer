@@ -15,6 +15,7 @@ public class Places
 		name="";
 		vicinity="";
 		rating="";
+		types=null;
 	}
 	
 	@Override
