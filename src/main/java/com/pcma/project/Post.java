@@ -23,9 +23,8 @@ public class Post
 	private String title;
 	private String content;
 	private String poster;
-	Double latitude,longitude;
+	private Double latitude,longitude;
 
-	
 	public Post() 
 	{
 		
@@ -74,6 +73,7 @@ public class Post
 	public void setPoster(String poster) {
 		this.poster = poster;
 	}
+	
 
 	public Double getLatitude() {
 		return latitude;
@@ -90,6 +90,7 @@ public class Post
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
+
 
 
 	/**

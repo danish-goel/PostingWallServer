@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackageClasses = PostRepository.class)
-public class PcmaProjectApplication {
+public class PcmaProjectApplication 
+{
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         SpringApplication.run(PcmaProjectApplication.class, args);
     }
 }

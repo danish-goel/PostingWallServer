@@ -1,6 +1,8 @@
 package com.pcma.project;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import retrofit.http.Body;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.Query;
 
 import com.google.common.collect.Lists;
 
@@ -32,7 +39,8 @@ import com.google.common.collect.Lists;
 // Tell Spring that this class is a Controller that should 
 // handle certain HTTP requests for the DispatcherServlet
 @Controller
-public class PostSvc implements PostSvcApi {
+public class PostSvc implements PostSvcApi 
+{
 	
 	// The VideoRepository that we are going to store our videos
 	// in. We don't explicitly construct a VideoRepository, but
@@ -63,19 +71,26 @@ public class PostSvc implements PostSvcApi {
 	// in synch.
 	//
 	@RequestMapping(value=PostSvcApi.POST_SVC_PATH, method=RequestMethod.POST)
-	public @ResponseBody boolean addVideo(@RequestBody Post v){
+	public @ResponseBody boolean addPost(@RequestBody Post v)
+	{
 		 posts.save(v);
 		 return true;
 	}
+	
+	
 	
 	// Receives GET requests to /video and returns the current
 	// list of videos in memory. Spring automatically converts
 	// the list of videos to JSON because of the @ResponseBody
 	// annotation.
 	@RequestMapping(value=PostSvcApi.POST_SVC_PATH, method=RequestMethod.GET)
-	public @ResponseBody Collection<Post> getVideoList(){
+	public @ResponseBody Collection<Post> getPostList()
+	{
 		return Lists.newArrayList(posts.findAll());
 	}
+	
+	
+	
 	
 	// Receives GET requests to /video/find and returns all Videos
 	// that have a title (e.g., Video.name) matching the "title" request
@@ -85,8 +100,40 @@ public class PostSvc implements PostSvcApi {
 			// Tell Spring to use the "title" parameter in the HTTP request's query
 			// string as the value for the title method parameter
 			@RequestParam(TITLE_PARAMETER) String title
-	){
+	)
+	{
 		return posts.findByTitle(title);
 	}
+
+	
+	
+	@Override
+	@RequestMapping(value=PostSvcApi.NEARBY_POST_PATH, method=RequestMethod.GET)
+	public @ResponseBody List<Post> getNearbyPostList(@RequestParam("latitude") Double lat,@RequestParam("longitude") Double longi) 
+	{
+		List<Post> nearbyPosts=new ArrayList<Post>();
+		Constants c1=new Constants();
+		for(Post post:posts.findAll())
+		{
+			Double post_lat=post.getLatitude();
+			Double post_longi=post.getLongitude();
+			if(lat==null || longi==null|| post_lat==null|| post_longi==null)
+			{
+			}
+			else
+			{
+				long distance=c1.calculateDistance(lat, longi,post_lat,post_longi);
+				if(distance<3)
+				{
+					nearbyPosts.add(post);
+				}
+			}
+
+
+		}
+		return nearbyPosts;
+	}
+	
+
 
 }
