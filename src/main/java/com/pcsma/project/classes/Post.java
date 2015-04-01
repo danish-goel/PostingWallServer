@@ -3,6 +3,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import com.google.common.base.Objects;
 
@@ -24,6 +25,9 @@ public class Post
 	private String content;
 	private String poster;
 	private Double latitude,longitude;
+	
+	@ManyToOne
+	private User user;
 
 	public Post() 
 	{
@@ -89,6 +93,14 @@ public class Post
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.common.collect.Lists;
 import com.pcsma.project.classes.Constants;
 import com.pcsma.project.classes.Post;
+import com.pcsma.project.classes.User;
 import com.pcsma.project.client.PostSvcApi;
 import com.pcsma.project.places.GooglePlaces;
 import com.pcsma.project.places.Places;
 import com.pcsma.project.repository.PostRepository;
+import com.pcsma.project.repository.UserRepository;
 
 /**
  * This simple VideoSvc allows clients to send HTTP POST requests with
@@ -47,6 +50,9 @@ public class PostSvc implements PostSvcApi
 
 	@Autowired
 	private PostRepository posts;
+	
+	@Autowired
+	private UserRepository users;
 
 	
 	/*----------------------------------------------------------------------------*/
@@ -138,5 +144,34 @@ public class PostSvc implements PostSvcApi
 		
 	}
 
+	@Override
+	@RequestMapping(value=PostSvcApi.POST_SVC_PATH+"/{user}", method=RequestMethod.GET)
+	public @ResponseBody List<Post> getPostsForUser(@PathVariable("user") String userEmail)
+	{
+		User u =users.findOne(userEmail);
+		if(u!=null)
+		{
+			return Lists.newArrayList(u.getPosts());
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	@Override
+	@RequestMapping(value=PostSvcApi.USER_SVC_PATH, method=RequestMethod.POST)
+	public @ResponseBody boolean addUser(@RequestBody User u)
+	{
+		users.save(u);
+		return true;
+	}
 
+	@Override
+	@RequestMapping(value=PostSvcApi.USER_SVC_PATH, method=RequestMethod.GET)
+	public @ResponseBody Collection<User> getAllUsers()
+	{
+		return Lists.newArrayList(users.findAll());
+	}
+	
 }

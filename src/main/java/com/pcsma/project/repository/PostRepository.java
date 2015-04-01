@@ -15,7 +15,8 @@ import com.pcsma.project.classes.Post;
  *
  */
 @Repository
-public interface PostRepository extends CrudRepository<Post, Long>{
+public interface PostRepository extends CrudRepository<Post, Long>
+{
 
 	// Find all videos with a matching title (e.g., Video.name)
 	public Collection<Post> findByTitle(String title);

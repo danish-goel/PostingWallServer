@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.pcsma.project.classes.Post;
+import com.pcsma.project.classes.User;
 import com.pcsma.project.places.Places;
 
 import retrofit.http.Body;
@@ -11,6 +12,7 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.Query;
 
 public interface PostSvcApi 
@@ -21,7 +23,7 @@ public interface PostSvcApi
 	public static final String NEARBY_POST_PATH = "/nearbyposts";
 	public static final String NEARBY_PLACES_PATH = "/nearbyplaces";
 	public static final String POST_TITLE_SEARCH_PATH = POST_SVC_PATH + "/find";
-	
+	public static final String USER_SVC_PATH="/user";
 	/*-----------------------------------------------------------------*/
 	@GET(POST_SVC_PATH)
 	public Collection<Post> getPostList();
@@ -31,6 +33,15 @@ public interface PostSvcApi
 	
 	@GET(POST_TITLE_SEARCH_PATH)
 	public Collection<Post> findByTitle(@Query(TITLE_PARAMETER) String title);
+	
+	@GET(POST_SVC_PATH+"/{user}")
+	public List<Post> getPostsForUser(@Path("user") String userEmail);
+	
+	@POST(USER_SVC_PATH)
+	public boolean addUser(@Body User u);
+	
+	@GET(USER_SVC_PATH)
+	public Collection<User> getAllUsers();
 	
 	@GET(NEARBY_POST_PATH)
 	public List<Post> getNearbyPostList(@Query("latitude") Double lat,@Query("longitude") Double longi);
