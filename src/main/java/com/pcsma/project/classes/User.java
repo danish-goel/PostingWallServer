@@ -21,9 +21,10 @@ public class User
 {
 
 	@Id
+	private String name;
+
 	private String email;
 	
-	private String name;
 
 	@JsonIgnore
 	// We add a OneToMany annotation indicating that each Category (e.g., "the one")

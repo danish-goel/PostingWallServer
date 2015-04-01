@@ -146,9 +146,9 @@ public class PostSvc implements PostSvcApi
 
 	@Override
 	@RequestMapping(value=PostSvcApi.POST_SVC_PATH+"/{user}", method=RequestMethod.GET)
-	public @ResponseBody List<Post> getPostsForUser(@PathVariable("user") String userEmail)
+	public @ResponseBody List<Post> getPostsForUser(@PathVariable("user") String userName)
 	{
-		User u =users.findOne(userEmail);
+		User u =users.findOne(userName);
 		if(u!=null)
 		{
 			return Lists.newArrayList(u.getPosts());
