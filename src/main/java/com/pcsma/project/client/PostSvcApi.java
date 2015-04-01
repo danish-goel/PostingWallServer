@@ -8,6 +8,7 @@ import com.pcsma.project.classes.User;
 import com.pcsma.project.places.Places;
 
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -30,6 +31,9 @@ public interface PostSvcApi
 	
 	@POST(POST_SVC_PATH)
 	public boolean addPost(@Body Post v);
+	
+	@DELETE(POST_SVC_PATH)
+	public boolean deletePost(@Query("id") Long id);
 	
 	@GET(POST_TITLE_SEARCH_PATH)
 	public Collection<Post> findByTitle(@Query(TITLE_PARAMETER) String title);

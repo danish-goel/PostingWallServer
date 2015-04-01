@@ -173,5 +173,13 @@ public class PostSvc implements PostSvcApi
 	{
 		return Lists.newArrayList(users.findAll());
 	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.POST_SVC_PATH, method=RequestMethod.DELETE)
+	public @ResponseBody boolean deletePost(@RequestParam("id") Long id)
+	{
+		posts.delete(id);
+		return false;
+	}
 	
 }
