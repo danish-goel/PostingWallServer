@@ -23,29 +23,16 @@ public class User
 {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
+	private String email;
+
 	private String name;
 
-	private String email;
-	
-
 	@JsonIgnore
-	// We add a OneToMany annotation indicating that each Category (e.g., "the one")
-	// can refer to multiple videos (e.g., "the many"). The "mappedBy"
-	// attribute tells JPA the name of the property on the Video object
-	// that refers to a category (e.g., Video.category). In this case,
-	// the relationship is bi-directional since both the Video and the
-	// Category know about each other. It is also possible for only one
-	// class to be aware of the other.
-	//
-	// You do not have to create the table for this class before using @OneToMany.
-	// The needed tables will automatically be created for you.
 	@OneToMany(mappedBy="user")
 	private Collection<Post> posts;
 	
-	@OneToMany(mappedBy="location")
+	@JsonIgnore
+	@OneToMany(mappedBy="user")
 	private Collection<Location> locations;
 
 	public String getEmail() 
@@ -86,14 +73,6 @@ public class User
 	public void setPosts(Collection<Post> posts) 
 	{
 		this.posts = posts;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public Collection<Location> getLocations() {

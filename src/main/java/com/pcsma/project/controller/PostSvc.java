@@ -150,11 +150,12 @@ public class PostSvc implements PostSvcApi
 	}
 
 	@Override
-	@RequestMapping(value=PostSvcApi.POST_SVC_PATH+"/{user}", method=RequestMethod.GET)
-	public @ResponseBody List<Post> getPostsForUser(@PathVariable("user") Long userId)
+	@RequestMapping(value=PostSvcApi.USERS_POST_PATH, method=RequestMethod.GET)
+	public @ResponseBody List<Post> getPostsForUser(@RequestParam("user") String userEmail)
 	
 	{
-		User u =users.findOne(userId);
+		System.out.println(userEmail);
+		User u =users.findOne(userEmail);
 		if(u!=null)
 		{
 			return Lists.newArrayList(u.getPosts());
@@ -169,7 +170,8 @@ public class PostSvc implements PostSvcApi
 	@RequestMapping(value=PostSvcApi.USER_SVC_PATH, method=RequestMethod.POST)
 	public @ResponseBody boolean addUser(@RequestBody User u)
 	{
-		users.save(u);
+		User k=users.save(u);
+		System.out.println(k.getEmail());
 		return true;
 	}
 
@@ -204,10 +206,10 @@ public class PostSvc implements PostSvcApi
 	}
 
 	@Override
-	@RequestMapping(value=PostSvcApi.LOCATION_SVC_PATH+"/{user}", method=RequestMethod.GET)
-	public @ResponseBody List<Location> getLocationsForUser(@PathVariable("user") Long locationId) 
+	@RequestMapping(value=PostSvcApi.USERS_LOCATION_PATH, method=RequestMethod.GET)
+	public @ResponseBody List<Location> getLocationsForUser(@RequestParam("user") String userEmail) 
 	{
-		User u =users.findOne(locationId);
+		User u =users.findOne(userEmail);
 		if(u!=null)
 		{
 			return Lists.newArrayList(u.getLocations());
@@ -216,6 +218,13 @@ public class PostSvc implements PostSvcApi
 		{
 			return null;
 		}
+	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.USER_TITLE_SEARCH_PATH, method=RequestMethod.GET)
+	public @ResponseBody User findUserByEmail(@RequestParam("user") String userEmail) 
+	{
+		return users.findOne(userEmail);
 	}
 	
 }

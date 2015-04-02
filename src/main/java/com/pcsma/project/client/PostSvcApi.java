@@ -27,7 +27,11 @@ public interface PostSvcApi
 	public static final String NEARBY_PLACES_PATH = "/nearbyplaces";
 	public static final String POST_TITLE_SEARCH_PATH = POST_SVC_PATH + "/find";
 	public static final String USER_SVC_PATH="/user";
+	public static final String USERS_POST_PATH="/userspost";
+	public static final String USER_TITLE_SEARCH_PATH=USER_SVC_PATH + "/find";
+	public static final String USER_ID_PARAMETER = "id";
 	public static final String LOCATION_SVC_PATH="/location";
+	public static final String USERS_LOCATION_PATH="/userslocation";
 	/*-----------------------------------------------------------------*/
 	@GET(POST_SVC_PATH)
 	public Collection<Post> getPostList();
@@ -41,8 +45,8 @@ public interface PostSvcApi
 	@GET(POST_TITLE_SEARCH_PATH)
 	public Collection<Post> findByTitle(@Query(TITLE_PARAMETER) String title);
 	
-	@GET(POST_SVC_PATH+"/{user}")
-	public List<Post> getPostsForUser(@Path("user") Long userId);
+	@GET(USERS_POST_PATH)
+	public List<Post> getPostsForUser(@Query("user") String userEmail);
 	
 	@GET(NEARBY_POST_PATH)
 	public List<Post> getNearbyPostList(@Query("latitude") Double lat,@Query("longitude") Double longi);
@@ -51,22 +55,31 @@ public interface PostSvcApi
 	public List<Places> getNearbyPlacesList(@Query("latitude") Double lat,@Query("longitude") Double longi);
 	
 	/*---------------------User-----------------------------------------------------------------------*/
+	
 	@POST(USER_SVC_PATH)
 	public boolean addUser(@Body User u);
 	
 	@GET(USER_SVC_PATH)
 	public Collection<User> getAllUsers();
+	
+	@GET(USER_TITLE_SEARCH_PATH)
+	public User findUserByEmail(@Query("user") String userEmail);
+	
 	/*---------------------End User-----------------------------------------------------------------------*/
 	
+	
+	
 	/*---------------------Location-----------------------------------------------------------------------*/
+	
 	@POST(LOCATION_SVC_PATH)
 	public boolean addLocation(@Body Location l);
 	
 	@GET(LOCATION_SVC_PATH)
 	public List<Location> getAllLocations();
 	
-	@GET(LOCATION_SVC_PATH+"/{user}")
-	public List<Location> getLocationsForUser(@Path("user") Long locationId);
+	@GET(USERS_LOCATION_PATH)
+	public List<Location> getLocationsForUser(@Query("user") String userEmail);
+	
 	/*---------------------End Location-----------------------------------------------------------------------*/
 	
 	
