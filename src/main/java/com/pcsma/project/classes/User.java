@@ -3,6 +3,8 @@ package com.pcsma.project.classes;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -21,6 +23,9 @@ public class User
 {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+	
 	private String name;
 
 	private String email;
@@ -39,6 +44,9 @@ public class User
 	// The needed tables will automatically be created for you.
 	@OneToMany(mappedBy="user")
 	private Collection<Post> posts;
+	
+	@OneToMany(mappedBy="location")
+	private Collection<Location> locations;
 
 	public String getEmail() 
 	{
@@ -79,6 +87,23 @@ public class User
 	{
 		this.posts = posts;
 	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Collection<Location> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(Collection<Location> locations) {
+		this.locations = locations;
+	}
 	
+
 
 }

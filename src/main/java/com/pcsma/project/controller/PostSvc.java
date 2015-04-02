@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
 import com.pcsma.project.classes.Constants;
+import com.pcsma.project.classes.Location;
 import com.pcsma.project.classes.Post;
 import com.pcsma.project.classes.User;
 import com.pcsma.project.client.PostSvcApi;
 import com.pcsma.project.places.GooglePlaces;
 import com.pcsma.project.places.Places;
+import com.pcsma.project.repository.LocationRepository;
 import com.pcsma.project.repository.PostRepository;
 import com.pcsma.project.repository.UserRepository;
 
@@ -53,6 +55,9 @@ public class PostSvc implements PostSvcApi
 	
 	@Autowired
 	private UserRepository users;
+	
+	@Autowired
+	private LocationRepository locations;
 
 	
 	/*----------------------------------------------------------------------------*/
@@ -146,9 +151,10 @@ public class PostSvc implements PostSvcApi
 
 	@Override
 	@RequestMapping(value=PostSvcApi.POST_SVC_PATH+"/{user}", method=RequestMethod.GET)
-	public @ResponseBody List<Post> getPostsForUser(@PathVariable("user") String userName)
+	public @ResponseBody List<Post> getPostsForUser(@PathVariable("user") Long userId)
+	
 	{
-		User u =users.findOne(userName);
+		User u =users.findOne(userId);
 		if(u!=null)
 		{
 			return Lists.newArrayList(u.getPosts());
@@ -180,6 +186,36 @@ public class PostSvc implements PostSvcApi
 	{
 		posts.delete(id);
 		return false;
+	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.LOCATION_SVC_PATH, method=RequestMethod.POST)
+	public @ResponseBody boolean addLocation(@RequestBody Location l) 
+	{
+		locations.save(l);
+		return false;
+	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.LOCATION_SVC_PATH, method=RequestMethod.GET)
+	public @ResponseBody List<Location> getAllLocations() 
+	{
+		return Lists.newArrayList(locations.findAll());
+	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.LOCATION_SVC_PATH+"/{user}", method=RequestMethod.GET)
+	public @ResponseBody List<Location> getLocationsForUser(@PathVariable("user") Long locationId) 
+	{
+		User u =users.findOne(locationId);
+		if(u!=null)
+		{
+			return Lists.newArrayList(u.getLocations());
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 }
