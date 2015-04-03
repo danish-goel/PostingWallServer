@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 
 public class GooglePlaces
@@ -56,7 +57,7 @@ public class GooglePlaces
 			}
 			//create JSONObject, pass stinrg returned from doInBackground
 			JSONObject resultObject = new JSONObject(placesBuilder.toString());
-			
+//			System.out.println(placesBuilder.toString());
 			
 			//get "results" array
 			JSONArray placesArray = resultObject.getJSONArray("results");
@@ -76,7 +77,6 @@ public class GooglePlaces
 					//get location section
 					JSONObject loc = placeObject.getJSONObject("geometry")
 									.getJSONObject("location");
-									
 					//get types
 					JSONArray types = placeObject.getJSONArray("types");
 					ArrayList<String> place_types=new ArrayList<String>();
@@ -101,6 +101,8 @@ public class GooglePlaces
 					pl.setVicinity(vicinity);
 					pl.setTypes(place_types);
 					pl.setRating(rating);
+//					pl.setLatitude(Double.parseDouble(latitude));
+//					pl.setLongitude(Double.parseDouble(longitude));
 				}
 				catch(JSONException jse)
 				{
