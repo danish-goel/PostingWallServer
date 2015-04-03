@@ -49,10 +49,10 @@ public interface PostSvcApi
 	public List<Post> getPostsForUser(@Query("user") String userEmail);
 	
 	@GET(NEARBY_POST_PATH)
-	public List<Post> getNearbyPostList(@Query("latitude") Double lat,@Query("longitude") Double longi);
+	public List<Post> getNearbyPostList(@Query("latitude") Double lat,@Query("longitude") Double longi,@Query("radius") Float radius);
 	
 	@GET(NEARBY_PLACES_PATH)
-	public List<Places> getNearbyPlacesList(@Query("latitude") Double lat,@Query("longitude") Double longi);
+	public List<Places> getNearbyPlacesList(@Query("latitude") Double lat,@Query("longitude") Double longi,@Query("radius") Float radius);
 	
 	/*---------------------User-----------------------------------------------------------------------*/
 	

@@ -92,7 +92,7 @@ public class PostSvc implements PostSvcApi
 	
 	@Override
 	@RequestMapping(value=PostSvcApi.NEARBY_POST_PATH, method=RequestMethod.GET)
-	public @ResponseBody List<Post> getNearbyPostList(@RequestParam("latitude") Double lat,@RequestParam("longitude") Double longi) 
+	public @ResponseBody List<Post> getNearbyPostList(@RequestParam("latitude") Double lat,@RequestParam("longitude") Double longi,@RequestParam("radius") Float radius) 
 	{
 		List<Post> nearbyPosts=new ArrayList<Post>();
 		Constants c1=new Constants();
@@ -106,7 +106,7 @@ public class PostSvc implements PostSvcApi
 			else
 			{
 				long distance=c1.calculateDistance(lat, longi,post_lat,post_longi);
-				if(distance<3)
+				if(distance<radius)
 				{
 					nearbyPosts.add(post);
 				}
@@ -119,8 +119,9 @@ public class PostSvc implements PostSvcApi
 
 	@Override
 	@RequestMapping(value=PostSvcApi.NEARBY_PLACES_PATH, method=RequestMethod.GET)
-	public @ResponseBody List<Places> getNearbyPlacesList(@RequestParam("latitude") Double lat,@RequestParam("longitude") Double longi) 
+	public @ResponseBody List<Places> getNearbyPlacesList(@RequestParam("latitude") Double lat,@RequestParam("longitude") Double longi,@RequestParam("radius") Float radius) 
 	{
+		String Placesradius=String.valueOf(radius*1000);
 		try
 		{
 			String placesSearchStr ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
@@ -128,7 +129,7 @@ public class PostSvc implements PostSvcApi
 	        +","
 	        +URLEncoder.encode(String.valueOf(longi), "UTF-8")
 	        +"&radius="
-			+URLEncoder.encode("2000", "UTF-8")
+			+URLEncoder.encode(Placesradius, "UTF-8")
 			+"&sensor="
 			+URLEncoder.encode("true", "UTF-8")
 			+"&types="
