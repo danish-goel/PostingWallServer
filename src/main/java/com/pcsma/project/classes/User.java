@@ -26,6 +26,9 @@ public class User
 	private String email;
 
 	private String name;
+	
+	String gcm_regid;
+
 
 	@JsonIgnore
 	@OneToMany(mappedBy="user")
@@ -82,7 +85,15 @@ public class User
 	public void setLocations(Collection<Location> locations) {
 		this.locations = locations;
 	}
-	
 
+	public String getGcm_regid() {
+		return gcm_regid;
+	}
+
+	public void setGcm_regid(String gcm_regid) {
+		this.gcm_regid = gcm_regid;
+	}
+	
+	
 
 }

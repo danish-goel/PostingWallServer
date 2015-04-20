@@ -57,7 +57,6 @@ public class GooglePlaces
 			}
 			//create JSONObject, pass stinrg returned from doInBackground
 			JSONObject resultObject = new JSONObject(placesBuilder.toString());
-//			System.out.println(placesBuilder.toString());
 			
 			//get "results" array
 			JSONArray placesArray = resultObject.getJSONArray("results");
@@ -77,6 +76,10 @@ public class GooglePlaces
 					//get location section
 					JSONObject loc = placeObject.getJSONObject("geometry")
 									.getJSONObject("location");
+					
+					pl.setLatitude(loc.getDouble("lat"));
+					pl.setLongitude(loc.getDouble("lng"));
+//					System.out.println(loc.toString());
 					//get types
 					JSONArray types = placeObject.getJSONArray("types");
 					ArrayList<String> place_types=new ArrayList<String>();

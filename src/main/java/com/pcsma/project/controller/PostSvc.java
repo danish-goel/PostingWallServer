@@ -1,5 +1,6 @@
 package com.pcsma.project.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -15,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.MulticastResult;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
 import com.google.common.collect.Lists;
 import com.pcsma.project.classes.Constants;
 import com.pcsma.project.classes.Location;
@@ -27,22 +32,6 @@ import com.pcsma.project.repository.LocationRepository;
 import com.pcsma.project.repository.PostRepository;
 import com.pcsma.project.repository.UserRepository;
 
-/**
- * This simple VideoSvc allows clients to send HTTP POST requests with
- * videos that are stored in memory using a list. Clients can send HTTP GET
- * requests to receive a JSON listing of the videos that have been sent to
- * the controller so far. Stopping the controller will cause it to lose the history of
- * videos that have been sent to it because they are stored in memory.
- * 
- * Notice how much simpler this VideoSvc is than the original VideoServlet?
- * Spring allows us to dramatically simplify our service. Another important
- * aspect of this version is that we have defined a VideoSvcApi that provides
- * strong typing on both the client and service interface to ensure that we
- * don't send the wrong paraemters, etc.
- * 
- * @author jules
- *
- */
 
 // Tell Spring that this class is a Controller that should 
 // handle certain HTTP requests for the DispatcherServlet
@@ -66,6 +55,59 @@ public class PostSvc implements PostSvcApi
 	public @ResponseBody boolean addPost(@RequestBody Post v)
 	{
 		 posts.save(v);
+		 
+		 Sender sender = new Sender("AIzaSyBjfVfYpTn-DuWlauYMYozC6vKEu0pKIRk");
+         Message message = new Message.Builder()
+         .collapseKey("1")
+         .addData("message",v.getContent())
+         .build();
+         
+         List<User> users_list=Lists.newArrayList(users.findAll());
+         List<String> user_regids=new ArrayList<String>();
+         
+         for(User u:users_list)
+         {
+        	 if(u.getEmail().equals(v.getUser().getEmail()))
+        	 {
+        		 
+        	 }
+        	 else
+        	 {
+        		 user_regids.add(u.getGcm_regid());
+        	 }
+         }
+
+//         try 
+//         {
+//        	Result result = sender.send(message,v.getUser().getGcm_regid()+"", 5);
+//         }
+//         catch (IOException e) 
+//         {
+//			e.printStackTrace();
+//         }
+         
+         try {
+
+        	 if(!user_regids.isEmpty())
+        	 {
+		         MulticastResult result = sender.send(message,user_regids, 1);
+		         System.out.println("Response: " + result.getResults().toString());
+		         if (result.getResults() != null) {
+		
+		             int canonicalRegId = result.getCanonicalIds();
+		             if (canonicalRegId != 0) {
+		                 System.out.println("response " +canonicalRegId );
+		             }
+		         } else {
+		             int error = result.getFailure();
+		             System.out.println("Broadcast failure: " + error);
+		         }
+        	 }
+
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+//         
 		 return true;
 	}
 	
