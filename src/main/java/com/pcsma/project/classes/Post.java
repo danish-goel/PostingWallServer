@@ -1,4 +1,6 @@
 package com.pcsma.project.classes;
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +27,10 @@ public class Post
 	private String content;
 	private String poster;
 	private Double latitude,longitude;
+	private ArrayList<String> comments=new ArrayList<String>();
+	private int likeNo;
 	
+
 	@ManyToOne
 	private User user;
 
@@ -103,6 +108,27 @@ public class Post
 		this.user = user;
 	}
 
+	public ArrayList<String> getComments() {
+		return comments;
+	}
+
+	public void setComments(ArrayList<String> comments) {
+		this.comments = comments;
+	}
+
+	public boolean addComment(String comment)
+	{
+		this.comments.add(comment);
+		return true;
+	}
+	
+	public int getLikeNo() {
+		return likeNo;
+	}
+
+	public void setLikeNo(int likeNo) {
+		this.likeNo = likeNo;
+	}
 
 
 	/**

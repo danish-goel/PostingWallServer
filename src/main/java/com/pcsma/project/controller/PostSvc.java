@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import retrofit.http.POST;
+
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.MulticastResult;
 import com.google.android.gcm.server.Result;
@@ -73,7 +75,22 @@ public class PostSvc implements PostSvcApi
         	 }
         	 else
         	 {
-        		 user_regids.add(u.getGcm_regid());
+        		 Collection<Location> list=u.getLocations();
+        		 if(list.isEmpty())
+        		 {
+        			 
+        		 }
+        		 else
+        		 {
+        			 for(Location l:list)
+        			 {
+        				 if(Constants.calculateDistance(v.getLatitude(), v.getLongitude(),l.getLatitude(), l.getLongitude())<3)
+        				 {
+        					 user_regids.add(u.getGcm_regid());
+        				 }
+        			 }
+        			 
+        		 }
         	 }
          }
 
@@ -268,6 +285,66 @@ public class PostSvc implements PostSvcApi
 	public @ResponseBody User findUserByEmail(@RequestParam("user") String userEmail) 
 	{
 		return users.findOne(userEmail);
+	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.COMMENT_SVC_PATH, method=RequestMethod.POST)
+	public @ResponseBody boolean addComment(@RequestParam("index") long id,@RequestParam("comment") String comment) 
+	{
+		for(Post p:posts.findAll())
+		{
+			if(p.getId()==id)
+			{
+				p.addComment(comment);
+				posts.save(p);
+				return true;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.COMMENT_SVC_PATH, method=RequestMethod.GET)
+	public @ResponseBody ArrayList<String> getComments(@RequestParam("index") long id) 
+	{
+		for(Post p:posts.findAll())
+		{
+			if(p.getId()==id)
+			{
+				return p.getComments();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.LIKE_SVC_PATH, method=RequestMethod.POST)
+	public @ResponseBody boolean addLike(@RequestParam("index") long id) 
+	{
+		for(Post p:posts.findAll())
+		{
+			if(p.getId()==id)
+			{
+				p.setLikeNo(p.getLikeNo()+1);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	@RequestMapping(value=PostSvcApi.DISLIKE_SVC_PATH, method=RequestMethod.POST)
+	public @ResponseBody boolean addDisLike(@RequestParam("index") long id) 
+	{
+		for(Post p:posts.findAll())
+		{
+			if(p.getId()==id)
+			{
+				p.setLikeNo(p.getLikeNo()-1);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

@@ -4,7 +4,7 @@ public class Constants
 {
 		public final static double AVERAGE_RADIUS_OF_EARTH = 6371;
 		
-		public long calculateDistance(double userLat, double userLng,double venueLat, double venueLng)
+		public static long calculateDistance(double userLat, double userLng,double venueLat, double venueLng)
 		{
 		
 		    double latDistance = Math.toRadians(userLat - venueLat);

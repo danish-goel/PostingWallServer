@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.pcsma.project.classes.Location;
 import com.pcsma.project.classes.Post;
 import com.pcsma.project.classes.User;
@@ -32,6 +35,11 @@ public interface PostSvcApi
 	public static final String USER_ID_PARAMETER = "id";
 	public static final String LOCATION_SVC_PATH="/location";
 	public static final String USERS_LOCATION_PATH="/userslocation";
+	
+	public static final String COMMENT_SVC_PATH="/comments";
+	
+	public static final String LIKE_SVC_PATH="/like";
+	public static final String DISLIKE_SVC_PATH="/dislike";
 	/*-----------------------------------------------------------------*/
 	@GET(POST_SVC_PATH)
 	public Collection<Post> getPostList();
@@ -81,6 +89,24 @@ public interface PostSvcApi
 	public List<Location> getLocationsForUser(@Query("user") String userEmail);
 	
 	/*---------------------End Location-----------------------------------------------------------------------*/
+	
+	/*---------------------Post Comments-----------------------------------------------------------------------*/
+	@POST(COMMENT_SVC_PATH)
+	public boolean addComment(@RequestParam("index") long id,@RequestParam("comment") String comment);
+	
+	@GET(COMMENT_SVC_PATH)
+	public ArrayList<String> getComments(@RequestParam("index") long id);
+	
+	/*---------------------Post Comments-----------------------------------------------------------------------*/
+	
+	/*---------------------Like & Dislike-----------------------------------------------------------------------*/
+	@POST(LIKE_SVC_PATH)
+	public boolean addLike(@RequestParam("index") long id);
+	
+	@POST(DISLIKE_SVC_PATH)
+	public boolean addDisLike(@RequestParam("index") long id);
+	
+	/*---------------------Like & Dislike-----------------------------------------------------------------------*/
 	
 	
 }
